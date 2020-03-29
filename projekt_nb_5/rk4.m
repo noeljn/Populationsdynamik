@@ -1,7 +1,7 @@
 function [y] = rk4(v0)
 
 format long
-v95 = 15/(1.7*10^(-5));
+vMax = 15/(1.7*10^(-5));
 
 h = 0.02;
 t = 0;
@@ -12,7 +12,7 @@ disp(y);
 f = @(t,v) 15*v - 1.7*10^(-5)*v^2;
 
 
-while v95 > v
+while vMax > v
    y(end + 1, 1) = v;
    y(end, 2) = t;
    k1 = f(t,v);
