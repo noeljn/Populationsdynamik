@@ -1,4 +1,4 @@
-interpolation()    %Finding T1
+interpolT1()    %Finding T1
 
 %Finding constant values for V and S and T2 after T1
 fun = @(V,S)[15.*V+1.7*10^(-5).*V.^2-0.022.*V.*S;

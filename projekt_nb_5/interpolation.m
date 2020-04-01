@@ -1,4 +1,4 @@
-function interpolT1()
+function interpolation()
     vMax = 15/(1.7*10^(-5)); %Finding the constant value
 
     diffeq = @(t,v) 15*v - 1.7*10^(-5)*v^2;
