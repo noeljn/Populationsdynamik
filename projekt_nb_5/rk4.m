@@ -1,28 +1,22 @@
-function [y] = rk4(v0)
+function [y] = rk4(limit,v0,fun)
+    format long
+    h = 0.02;   %Length of steps
+    t = 0;
+    v = v0;
+    y = [];     %Containing [time, plant population]
 
-format long
-vMax = 15/(1.7*10^(-5));
+    %Using Runge-Kutta 4 until v reaches the constant value
+    while v < limit
+       y(end + 1, 2) = v;
+       y(end, 1) = t;
+       
+       %Runge-Kutta 4
+       k1 = fun(t,v);
+       k2 = fun(t + h/2,v + h/2*k1);
+       k3 = fun(t + h/2,v + h/2*k2);
+       k4 = fun(t, v + h*k3);
+       v = v + h/6 * (k1 + 2*k2 + 2*k3 + k4);
+       t = t + h;
 
-h = 0.02;
-t = 0;
-v = v0;
-y = [];
-
-disp(y);
-f = @(t,v) 15*v - 1.7*10^(-5)*v^2;
-
-
-while vMax > v
-   y(end + 1, 1) = v;
-   y(end, 2) = t;
-   k1 = f(t,v);
-   k2 = f(t + h/2,v + h/2*k1);
-   k3 = f(t + h/2,v + h/2*k2);
-   k4 = f(t, v + h*k3);
-   add = h/6 * (k1 + 2*k2 + 2*k3 + k4);
-   v = v + add;
-   t = t + h;
-   
-end
-%plot(y(:,2),y(:,1));
+    end
 end
