@@ -1,10 +1,10 @@
-function interpolT1()
+function [T1] = interpolT1()
     vMax = 15/(1.7*10^(-5)); %Finding the constant value
 
     diffeq = @(t,v) 15*v - 1.7*10^(-5)*v^2;
     v95 = 0.95*vMax;         %Calculating 95% of the constant value
 
-    y = rk4(vMax,100,diffeq);   %Retriving plant population with function 
+    y = rk4(vMax,100,0,diffeq,1,0.02);   %Retriving plant population with function 
                                 %for Runge-Kutta 4
 
     %Finding the index for value closest to v95 and interpolating
@@ -25,7 +25,4 @@ function interpolT1()
     else
         T1 = time2;
     end
-    
-    disp("T1 is:")
-    disp(T1);
 end
