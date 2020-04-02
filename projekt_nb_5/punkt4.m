@@ -1,9 +1,9 @@
-function [y] = punkt4()    
-format long
+function [y] = punkt4(start)    
+    format long
     h = 0.02;
     tMax = 1.5;
-    t = 0;
-    v = [100000;800];
+    t = start(1);
+    v = [start(2);2];
     y = []; %Containing [time, plant population]
     func = @(t,v)[15.*v(1)-1.7*10^(-5).*v(1).^2-0.022.*v(1).*v(2);
              -1.9.*v(2).^(1.4)+0.088.*v(1).^(0.6).*v(2).^(0.8)];
@@ -23,5 +23,8 @@ format long
        y(end,3) = t;
 
     end
+    %plot(y(:,3),y(:,1));
+    %hold on;
+    %plot(y(:,3),y(:,2));
     y = [y(end,1),y(end,2)];
 end
