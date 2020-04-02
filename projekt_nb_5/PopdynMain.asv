@@ -2,7 +2,7 @@ clear
 format long
 
 %Finding T1
-[T1,v95] = interpolT1();
+T1 = interpolT1();
 
     
 %Finding constant values for V and S
@@ -13,13 +13,11 @@ jac = @(V,S)[15-3.4*10^(-5).*V-0.022.*S,-0.022.*V;
 constants=newtonsys(10^(-6),[100000;700],fun,jac);
 
 
-T2 = punkt4([T1,v95]);
-roots = punkt5([200000,500,100]);
-disp(roots);
-diffV = abs(T2(1) - constants(1))/constants(1)*1000;
-diffS = abs(T2(2) - constants(2))/constants(2)*1000;
+T2 = punkt4();
+diffV = (T2(1) - constants(1))/constants(1)*1000;
+diffS = (T2(2) - constants(2))/constants(2)*1000;
 T = table(T1,constants(1),constants(2),diffV,diffS);
-T.Properties.VariableNames={'T1','V_constant','S_constant','Diff_V‰','Diff_S‰'};
+T.Properties.VariableNames={'T1','V_constant','S_constant','Diff_V','Diff_S'};
 
 
 disp(T);
