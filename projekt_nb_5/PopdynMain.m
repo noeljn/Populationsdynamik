@@ -1,25 +1,89 @@
 clear
 format long
 
-%Finding T1
-[T1,v95] = interpolT1();
+%Finding T1 and plotting the curve until T1
+[dataT1,T1,v95] = interpolT1();
+disp('T1 is:')
+disp(T1)
+figure(1)
+plot(dataT1(1,:),dataT1(2,:),'-b')
+hold on
 
-    
 %Finding constant values for V and S
-fun = @(V,S)[15.*V-1.7*10^(-5).*V.^2-0.022.*V.*S;
-             -1.9.*S.^(1.4)+0.088.*V.^(0.6).*S.^(0.8)];
-jac = @(V,S)[15-3.4*10^(-5).*V-0.022.*S,-0.022.*V;
-             0.0528.*S.^(0.8).*V.^(-0.4),-2.66.*S.^(0.4)+0.0704.*V.^(0.6).*S.^(-0.2)];
-constants=newtonsys(10^(-6),[100000;700],fun,jac);
+func1 = @(u)[15.*u(1)-1.7*10^(-5).*u(1).^2-0.022.*u(1).*u(2);
+             -1.9.*u(2).^(1.4)+0.088.*u(1).^(0.6).*u(2).^(0.8)];
+jac1 = @(u)[15-3.4*10^(-5).*u(1)-0.022.*u(2),-0.022.*u(1);
+             0.0528.*u(2).^(0.8).*u(1).^(-0.4),-2.66.*u(2).^(0.4)+0.0704.*u(1).^(0.6).*u(2).^(-0.2)];
+constants=newtonsys([100000;700],func1,jac1);
+
+%Collecting data with Runge-Kutta 4 and 
+%Plotting the population growth T1-T2
+dataT2 = rk4(1.5,[v95;2],T1,func1,2);
+figure(1)
+plot(dataT2(1,:),dataT2(2,:),'color',[0.9100,0.4100,0.1700])
+hold on
+figure(2)
+plot(dataT2(1,:),dataT2(3,:),'color',[0.9100,0.4100,0.1700])
+hold on
+
+%Calculating the difference in permille 
+diffV = abs(dataT2(2,end) - constants(1))/constants(1)*1000;
+diffS = abs(dataT2(3,end) - constants(2))/constants(2)*1000;
+Tab1 = table(constants(1),constants(2),diffV,diffS);
+Tab1.Properties.VariableNames={'V_constant','S_constant','Diff_V_permille','Diff_S_permille'};
+disp(Tab1)
 
 
-T2 = punkt4([T1,v95]);
-roots = punkt5([200000,500,100]);
-disp(roots);
-diffV = abs(T2(1) - constants(1))/constants(1)*1000;
-diffS = abs(T2(2) - constants(2))/constants(2)*1000;
-T = table(T1,constants(1),constants(2),diffV,diffS);
-T.Properties.VariableNames={'T1','V_constant','S_constant','Diff_V‰','Diff_S‰'};
+%Finding new constant values for V, S and R
+func2 = @(u)[15.*u(1)-1.7*10^(-5).*u(1).^2-0.022.*u(1).*u(2);
+             -1.9.*u(2).^(1.4)+0.088.*u(1).^(0.6).*u(2).^(0.8)-1.4.*u(2).*u(3);
+             -1.8.*u(3) + 0.028.*u(2).*sqrt(u(3))];
+jac2 = @(u)[15-3.4*10^(-5).*u(1)-0.022.*u(2),-0.022.*u(1),0;
+         0.0528.*u(2).^(0.8).*u(1).^(-0.4),-2.66.*u(2).^(0.4)+0.0704.*u(1).^(0.6).*u(2).^(-0.2)-1.4*u(3),-1.4.*u(2);
+         0,0.028.*sqrt(u(3)),-1.8 + 0.028.*u(2).*0.5.*1./sqrt(u(3))];
+
+constants = newtonsys([100000;600;20],func2,jac2);
+
+%Collecting data between T2-T3 with Runge-Kutta 4
+dataT3 = rk4(3,[dataT2(2:3,end);2],dataT2(1,end),func2,2);
+
+%Plotting the population growth T2-T3
+figure(1)
+plot(dataT3(1,:),dataT3(2,:),'color',[0,0.5,0.4])
+hold on
+figure(2)
+plot(dataT3(1,:),dataT3(3,:),'color',[0,0.5,0.4])
+hold on
+figure(3)
+plot(dataT3(1,:),dataT3(4,:),'color',[0,0.5,0.4])
+hold on
+
+%Tab2 with calculated constant when T=inf
+Tab2 = table(constants(1),constants(2),constants(3));
+Tab2.Properties.VariableNames={'V_constant','S_constant','R_constant'};
+disp(Tab2)
+%Tab3 with calculated data Runge-Kutta 4
+Tab3 = table(dataT3(2,end),dataT3(3,end),dataT3(4,end));
+Tab3.Properties.VariableNames={'V_year_3','S_year_3','R_year_3'};
+disp(Tab3);
+
+%Setting labels on the figures
+figure(1)
+xlabel('Time')
+ylabel('Population')
+legend('0-T1','T1-T2','T2-T3','Location','northeast')
+title('Plants')
+
+figure(2)
+xlabel('Time')
+ylabel('Population')
+legend('T1-T2','T2-T3','Location','northeast')
+title('Mice')
+
+figure(3)
+xlabel('Time')
+ylabel('Population')
+legend('T2-T3','Location','southeast')
+title('Snakes')
 
 
-disp(T);
