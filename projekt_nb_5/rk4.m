@@ -16,7 +16,7 @@ function [y] = rk4(limit,v0,t0,fun,s)
         h = (limit-t0)/N;   %Calculating the step length
         tvec = t0:h:limit;
         y=[t0;v];
-        for i = 1:N-1
+        for i = 1:N
            v = calcRK(fun,v,h);
            y = [y,[tvec(i+1);v]];
         end
