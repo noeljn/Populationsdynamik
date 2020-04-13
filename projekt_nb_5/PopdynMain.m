@@ -2,7 +2,12 @@ clear
 format long
 
 %Finding T1 and plotting the curve until T1
-[dataT1,T1,v95] = interpolT1();
+vMax = 15/(1.7*10^(-5));        %Finding the constant value
+fun = @(v) 15*v - 1.7*10^(-5)*v^2;
+v95 = 0.95*vMax;
+y = rk4(vMax*0.99,100,0,fun,1); %Retriving plant population with function 
+                                %for Runge-Kutta 4
+[dataT1,T1] = interpolT1(y,v95);
 disp('T1 is:')
 disp(T1)
 figure(1)

@@ -5,7 +5,7 @@ function [y] = rk4(limit,v0,t0,fun,s)
     y = []; %Containing [time, data points]
    
     if s==1 %When calculating T1 and its unknown
-        h=0.01; %Step length
+        h=0.002; %Step length
         while not(v > limit)
             y = [y,[t;v]];
             v = calcRK(fun,v,h);
