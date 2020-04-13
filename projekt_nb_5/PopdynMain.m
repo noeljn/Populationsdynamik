@@ -110,5 +110,11 @@ ylabel('Population')
 legend('T2-T3','Spraying','Location','southeast')
 title('Snakes')
 
+%Sensitivity
+%sensitivity(dataT2(2:3,end),dataT2(1,end));
+
+%Expansion
+expansion(dataT3,0);
+
 
 
