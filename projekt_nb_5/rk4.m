@@ -3,12 +3,12 @@ function [y] = rk4(limit,v0,t0,fun,s)
     t = t0;
     v = v0;
     y = []; %Containing [time, data points]
-    
+   
     if s==1 %When calculating T1 and its unknown
-        h=0.02; %Step length
-        while v < limit
+        h=0.01; %Step length
+        while not(v > limit)
             y = [y,[t;v]];
-            v=calcRK(fun,v,h);
+            v = calcRK(fun,v,h);
             t=t+h;
         end
     else    %When the time span is known
@@ -26,11 +26,11 @@ end
 
 %Runge-Kutta 4
 function [v] = calcRK(fun,v,h)
-      
-       k1 = fun(v);
-       k2 = fun(v + h/2*k1);
-       k3 = fun(v + h/2*k2);
-       k4 = fun(v + h*k3);
-       v = v + h/6 * (k1 + 2*k2 + 2*k3 + k4);
+    
+    k1 = fun(v);
+    k2 = fun(v + h/2*k1);
+    k3 = fun(v + h/2*k2);
+    k4 = fun(v + h*k3);
+    v = v + h/6 * (k1 + 2*k2 + 2*k3 + k4);
 end
 
