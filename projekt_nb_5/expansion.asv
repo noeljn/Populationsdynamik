@@ -1,4 +1,4 @@
-function harvest = expansion(dataT3,tau)
+function expansion(dataT3,tau)
 
 func2 = @(u)[15.*u(1)-1.7*10^(-5).*u(1).^2-0.022.*u(1).*u(2);
              -1.9.*u(2).^(1.4)+0.088.*u(1).^(0.6).*u(2).^(0.8)-1.4.*u(2).*u(3);
@@ -12,11 +12,13 @@ while t < 8
     
     %Collecting data between t and tau
     year = rk4(t + tau,start(2:4,end),start(1,end),func2,2);
-    %Harvest
-    year(2,end) = 100;
+    year(
     data = [data(:,1:end-1),year];
     start = [data(1:2,end);data(3,end);data(4,end)];
-
+    
+    %Harvest
+    %data(1,end) = 100;  
+    
     %Pest
     t = t + 1;
     year = rk4(t,start(2:4,end),start(1,end),func2,2);
@@ -27,19 +29,14 @@ while t < 8
 end
 
 
-%{
+
 figure(1)
-plot(data(1,:),data(2,:),'color',[0.9568, 0.5019, 0.1254]);
+plot(data(1,:),data(2,:),'color',[0.6666,0.2,0.3490]);
 hold on
 figure(2)
-plot(data(1,:),data(3,:),'color',[0.9568, 0.5019, 0.1254]);
+plot(data(1,:),data(3,:),'color',[0.6666,0.2,0.3490]);
 hold on
 figure(3)
-plot(data(1,:),data(4,:),'color',[0.9568, 0.5019, 0.1254]);
+plot(data(1,:),data(4,:),'color',[0.6666,0.2,0.3490]);
 hold on
-%}
-%Returns harvest for year 7
-index = find(data(1,:) == (7 + tau));
-harvest = data(2,index - 1) - 100;
-
 end
