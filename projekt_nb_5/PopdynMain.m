@@ -8,8 +8,7 @@ v95 = 0.95*vMax;
 y = rk4(vMax*0.99,100,0,fun,1); %Retriving plant population with function 
                                 %for Runge-Kutta 4
 [dataT1,T1] = interpolT1(y,v95);
-disp('T1 is:')
-disp(T1)
+fprintf("T1 is %f\n",T1);
 figure(1)
 plot(dataT1(1,:),dataT1(2,:),'-b')
 hold on
@@ -55,7 +54,6 @@ constants = newtonsys([100000;600;20],func2,jac2);
 dataT3 = rk4(3,[dataT2(2:3,end);2],dataT2(1,end),func2,2);
 
 %Plotting the population growth T2-T3
-
 figure(1)
 plot(dataT3(1,:),dataT3(2,:),'color',[0,0.8784,0.5294])
 hold on
@@ -77,6 +75,7 @@ Tab3.Properties.VariableNames={'V_year_3','S_year_3','R_year_3'};
 disp(Tab3);
 
 %Calculating the effects of spraying and plotting the results
+reference = rk4(8,dataT3(2:4,end),dataT3(1,end),func2,2);
 start = [dataT3(1:2,end);dataT3(3,end)*0.3;dataT3(4,end)*0.8];
 data = start;
 for i=1:5
@@ -85,51 +84,52 @@ for i=1:5
     start = [data(1:2,end);data(3,end)*0.3;data(4,end)*0.8];
 end
 
+
+%Sensitivity
+sensitivity(dataT2(2:3,end),dataT2(1,end));
+
+
+%Expansion
+expansionMain(dataT3);
+%reliabilityExpansion
+%reliabilityExpansion(dataT3);
+
 figure(1)
 plot(data(1,:),data(2,:),'color',[1, 0.5490, 0.5176]);
 hold on
+plot(reference(1,:),reference(2,:),'color',[0, 0.3373, 0.2471]);
+hold on
+
 figure(2)
 plot(data(1,:),data(3,:),'color',[1, 0.5490, 0.5176]);
 hold on
+plot(reference(1,:),reference(3,:),'color',[0, 0.3373, 0.2471]);
+hold on
+
 figure(3)
 plot(data(1,:),data(4,:),'color',[1, 0.5490, 0.5176]);
 hold on
+plot(reference(1,:),reference(4,:),'color',[0, 0.3373, 0.2471]);
+hold on
 
 %Setting labels on the figures
-
 figure(1)
 xlabel('Time')
 ylabel('Population')
-legend('0-T1','T1-T2','T2-T3','Spraying','Location','northeast')
+legend('Year 0-T1','Year T1-1.5','Year 1.5-3','Optimum tau to harvest','Pestiside','Without pestiside','Location','northeast')
 title('Plants')
 
 figure(2)
 xlabel('Time')
 ylabel('Population')
-legend('T1-T2','T2-T3','Spraying','Location','northeast')
+legend('Year T1-1.5','Year 1.5-3','Optimum tau to harvest','Pestiside','Without pestiside','Location','northeast')
 title('Mice')
 
 figure(3)
 xlabel('Time')
 ylabel('Population')
-legend('T2-T3','Spraying','Location','southeast')
+legend('Year 1.5-3','Optimum tau to harvest','Pestiside','Without pestiside','Location','northeast')
 title('Snakes')
-
-%Sensitivity
-%sensitivity(dataT2(2:3,end),dataT2(1,end));
-
-
-
-
-%{
-%Expansion
-expansionMain(dataT3);
-%reliabilityExpansion
-reliabilityExpansion(dataT3);
-%}
-
-
-
 
 
 
