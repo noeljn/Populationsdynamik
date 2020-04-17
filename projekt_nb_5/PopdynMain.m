@@ -106,7 +106,7 @@ title('Plants')
 figure(2)
 xlabel('Time')
 ylabel('Population')
-legend('T1-T2','T2-T3','Spraying','collLocation','northeast')
+legend('T1-T2','T2-T3','Spraying','Location','northeast')
 title('Mice')
 
 figure(3)
