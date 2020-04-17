@@ -2,7 +2,7 @@ function  reliabilityExpansion(dataT3)
 yvec = [];
 for i = 0:4
     N = 1000 *2^i;
-    data = expansion(dataT3,0.5,N);
+    data = expansion(dataT3,0.5,1,N);
     yvec(end + 1) = data(2,end);
 end
 
@@ -20,31 +20,40 @@ end
 
 
 %Modified expansion so u can change the N for rk4
-function [data] = expansion(dataT3,tau,N)
-
+function [data] = expansion(dataT3,tau,pest,N)
 func2 = @(u)[15.*u(1)-1.7*10^(-5).*u(1).^2-0.022.*u(1).*u(2);
              -1.9.*u(2).^(1.4)+0.088.*u(1).^(0.6).*u(2).^(0.8)-1.4.*u(2).*u(3);
              -1.8.*u(3) + 0.028.*u(2).*sqrt(u(3))];
 
-%Collecting data between T3-T4 with Runge-Kutta 4 
-t = 3;
-start = [dataT3(1:2,end);dataT3(3,end)*0.3;dataT3(4,end)*0.8];
+%Collecting data between T3-T8 with Runge-Kutta 4 
+t = 4;
+if pest == 1
+    start = [dataT3(1:2,end);dataT3(3,end)*0.3;dataT3(4,end)*0.8];
+else
+    start = [dataT3(1:2,end);dataT3(3,end);dataT3(4,end)];
+end
 data = start;
+
 while t < 8
     
     %Collecting data between t and tau
-    year = rk4Test(t + tau,start(2:4,end),start(1,end),func2,2,N);
-    %Harvest
-    year(2,end) = 100;
-    data = [data(:,1:end-1),year];
-    start = [data(1:2,end);data(3,end);data(4,end)];
+        year = rk4Test(t + tau,start(2:4,end),start(1,end),func2,2,N);
+        %Harvest
+        year(2,end) = 100;
+        data = [data(:,1:end-1),year];
+        start = [data(1:2,end);data(3,end);data(4,end)];
+        
+        if tau == 0
+            start = [data(1:2,end);data(3,end)*0.3;data(4,end)*0.8];
+        end
 
     %Pest
     t = t + 1;
-    year = rk4Test(t,start(2:4,end),start(1,end),func2,2,N);
-    data = [data(:,1:end-1),year];
-    start = [data(1:2,end);data(3,end)*0.3;data(4,end)*0.8];
-    
+    if pest == 1 && tau ~= 0
+        year = rk4Test(t,start(2:4,end),start(1,end),func2,2,N);
+        data = [data(:,1:end-1),year];
+        start = [data(1:2,end);data(3,end)*0.3;data(4,end)*0.8];
+    end
     
 end
 
