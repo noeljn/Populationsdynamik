@@ -106,7 +106,7 @@ title('Plants')
 figure(2)
 xlabel('Time')
 ylabel('Population')
-legend('T1-T2','T2-T3','Spraying','Location','northeast')
+legend('T1-T2','T2-T3','Spraying','collLocation','northeast')
 title('Mice')
 
 figure(3)
@@ -118,45 +118,18 @@ title('Snakes')
 %Sensitivity
 %sensitivity(dataT2(2:3,end),dataT2(1,end));
 
+
+
+
 %{
 %Expansion
-rg = (sqrt(5)-1)/2;
-qg = 1 - rg;
-a = 0;
-b = 0.999999;
-x1 = a + qg*(b-a);
-F1 = expansion(dataT3,x1);
-x2 = a + rg*(b-a);
-F2 = expansion(dataT3,x2);
-
-
-reliability = [];
-for i= 0:2
-    count = 0;
-    while count < 100*2^i
-        if F1 > F2
-            b = x2;
-            x2 = x1;
-            F2 = F1;
-            x1 = a + qg*(b-a);
-            F1 = expansion(dataT3,x1);
-        else
-            a = x1;
-            x1 = x2;
-            F1 = F2;
-            x2 = a + rg*(b-a);
-            F2 = expansion(dataT3,x2);
-        end
-        count = count + 1;
-    end
-    reliability(end + 1) = x1;
-end
-disp(reliability');
-%harvest = expansion(dataT3,0.7);
-%}
-
+expansionMain(dataT3);
 %reliabilityExpansion
 reliabilityExpansion(dataT3);
+%}
+
+
+
 
 
 
