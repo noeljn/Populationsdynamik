@@ -1,4 +1,4 @@
-function expansionMain3(dataT3)
+function expansionMain(dataT3)
 
 %Golden ratio
 r = (sqrt(5)-1)/2;
