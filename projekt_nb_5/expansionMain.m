@@ -146,7 +146,7 @@ func2 = @(u)[15.*u(1)-1.7*10^(-5).*u(1).^2-0.022.*u(1).*u(2);
              -1.8.*u(3) + 0.028.*u(2).*sqrt(u(3))];
 
 %Collecting data between T3-T8 with Runge-Kutta 4 
-t = 3;
+t = 4;
 if pest == 1
     start = [dataT3(1:2,end);dataT3(3,end)*0.3;dataT3(4,end)*0.8];
 else
