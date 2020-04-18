@@ -1,3 +1,4 @@
+clear all
 fun = @(v) 15*v - 1.7*10^(-5)*v^2;
 
 func1 = @(u)[15.*u(1)-1.7*10^(-5).*u(1).^2-0.022.*u(1).*u(2);
@@ -74,14 +75,19 @@ for n = 1:3
     disp('Order of accuracy')
     disp(qvec)
     
-    %Plotting the error against reference to see if RK has order of 4
+    %Plotting the error against step size and reference 
+    %to see if RK has order of 4
     felv = abs(yvec(1:end-1)-yvec(2:end));
     figure(n); 
-    loglog(hvec(1:end-1),felv); 
+    loglog(hvec(1:end-1),felv,'b'); 
     hold on
     loglog(hvec,hvec.^4,'k')
     hold on
     legend('Error','Reference','Location','southeast')
+    hold on
+    xlabel('Step size')
+    hold on
+    ylabel('Error')
     
     %Changing function to be analysed and initial values
     if n == 1
@@ -98,6 +104,8 @@ for n = 1:3
     end
     
 end
+figure(1)
+title('Analysing Runge-Kutta 4 when finding T1')
 figure(2)
 title('Model with V & S between T = T1 and 1.5')
 figure(3)
