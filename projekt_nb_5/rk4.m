@@ -4,8 +4,8 @@ function [y] = rk4(limit,v0,t0,fun,s)
     v = v0;
     y = []; %Containing [time, data points]
    
-    if s==1 %When calculating T1 and its unknown
-        h=0.002; %Step length
+    if s==1 %When calculating T1 and it's unknown
+        h=0.002; %Step size
         while not(v > limit)
             y = [y,[t;v]];
             v = calcRK(fun,v,h);
@@ -13,7 +13,7 @@ function [y] = rk4(limit,v0,t0,fun,s)
         end
     else    %When the time span is known
         N = 1000;   %No. of part intervals
-        h = (limit-t0)/N;   %Calculating the step length
+        h = (limit-t0)/N;   %Calculating the step size
         tvec = t0:h:limit;
         y=[t0;v];
         for i = 1:N
@@ -26,7 +26,6 @@ end
 
 %Runge-Kutta 4
 function [v] = calcRK(fun,v,h)
-    
     k1 = fun(v);
     k2 = fun(v + h/2*k1);
     k3 = fun(v + h/2*k2);
