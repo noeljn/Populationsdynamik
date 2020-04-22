@@ -40,7 +40,8 @@ while count < 100
     count = count + 1;
 end
 
-fprintf("Maximum harvest is made when tau is %f\n",a);
+disp("Maximum harvest is made when tau is:")
+disp(a)
 
 
 %Calculates how much the harvest is year 7 depending on tau
@@ -70,17 +71,17 @@ legend('With Pestaside','Without Pestaside')
 title('Plot of harvest dependent on Tau year 7')
 
 
-f1 = figure(10);
+f1 = figure(6);
 copyobj(get(figure(1),'children'),f1);
-f2 = figure(11);
+f2 = figure(7);
 copyobj(get(figure(2),'children'),f2);
-f3 = figure(12);
+f3 = figure(8);
 copyobj(get(figure(3),'children'),f3);
-f4 = figure(13);
+f4 = figure(9);
 copyobj(get(figure(1),'children'),f4);
-f5 = figure(14);
+f5 = figure(10);
 copyobj(get(figure(2),'children'),f5);
-f6 = figure(15);
+f6 = figure(11);
 copyobj(get(figure(3),'children'),f6);
 
 figurevec = [f1,f4,f2,f5,f3,f6];

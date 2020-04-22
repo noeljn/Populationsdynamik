@@ -8,7 +8,8 @@ v95 = 0.95*vMax;
 y = rk4(vMax*0.99,100,0,fun,1); %Retriving plant population with function 
                                 %for Runge-Kutta 4
 [dataT1,T1] = interpolT1(y,v95);
-fprintf("T1 is %f\n",T1);
+disp("T1 is:")
+disp(T1)
 figure(1)
 plot(dataT1(1,:),dataT1(2,:),'-b')
 hold on
@@ -46,7 +47,7 @@ func2 = @(u)[15.*u(1)-1.7*10^(-5).*u(1).^2-0.022.*u(1).*u(2);
              -1.8.*u(3) + 0.028.*u(2).*sqrt(u(3))];
 jac2 = @(u)[15-3.4*10^(-5).*u(1)-0.022.*u(2),-0.022.*u(1),0;
          0.0528.*u(2).^(0.8).*u(1).^(-0.4),-2.66.*u(2).^(0.4)+0.0704.*u(1).^(0.6).*u(2).^(-0.2)-1.4*u(3),-1.4.*u(2);
-         0,0.028.*sqrt(u(3)),-1.8 + 0.028.*u(2).*0.5.*1./sqrt(u(3))];
+         0,0.028.*sqrt(u(3)),-1.8 + 0.014.*u(2)*1./sqrt(u(3))];
 
 constants = newtonsys([100000;600;20],func2,jac2);
 
@@ -116,19 +117,19 @@ hold on
 figure(1)
 xlabel('Time')
 ylabel('Population')
-legend('Year 0-T1','Year T1-1.5','Year 1.5-3','Optimum tau to harvest','Pestiside','Without pestiside','Location','northeast')
+legend('Year 0-T1','Year T1-1.5','Year 1.5-3','Optimum tau','Pestiside','Without pestiside','Location','northeast')
 title('Plants')
 
 figure(2)
 xlabel('Time')
 ylabel('Population')
-legend('Year T1-1.5','Year 1.5-3','Optimum tau to harvest','Pestiside','Without pestiside','Location','northeast')
+legend('Year T1-1.5','Year 1.5-3','Optimum tau','Pestiside','Without pestiside','Location','northeast')
 title('Mice')
 
 figure(3)
 xlabel('Time')
 ylabel('Population')
-legend('Year 1.5-3','Optimum tau to harvest','Pestiside','Without pestiside','Location','northeast')
+legend('Year 1.5-3','Optimum tau','Pestiside','Without pestiside','Location','southwest')
 title('Snakes')
 
 
