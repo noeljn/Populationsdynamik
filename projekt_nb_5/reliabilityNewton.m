@@ -45,9 +45,9 @@ for n = 1:2
         
         %Printing out the final values for every tolerance
         if n ==1
-            fprintf('Constants are: V=%f, S=%f\n',roots(1),roots(2));
+            fprintf('Constants are: \nV=%.15f, \nS=%.15f\n',roots(1),roots(2));
         else
-            fprintf('Constants are: V=%f, S=%f, R=%f\n',roots(1),roots(2),roots(3));
+            fprintf('Constants are: \nV=%.15f, \nS=%.15f, \nR=%f\n',roots(1),roots(2),roots(3));
         end
         order = order-1 ;
         roots = start;

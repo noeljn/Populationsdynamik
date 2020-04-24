@@ -75,7 +75,7 @@ Tab3 = table(dataT3(2,end),dataT3(3,end),dataT3(4,end));
 Tab3.Properties.VariableNames={'V_year_3','S_year_3','R_year_3'};
 disp(Tab3);
 
-%Calculating the effects of spraying and plotting the results
+%Calculating the effects of pestisides and plotting the results
 reference = rk4(8,dataT3(2:4,end),dataT3(1,end),func2,2);
 start = [dataT3(1:2,end);dataT3(3,end)*0.3;dataT3(4,end)*0.8];
 data = start;
@@ -86,27 +86,26 @@ for i=1:5
 end
 
 
-%Sensitivity
+%Sensitivity in the model, changing coefficients
 sensitivity(dataT2(2:3,end),dataT2(1,end));
-
 
 %Expansion
 expansionMain(dataT3);
 %reliabilityExpansion
-%reliabilityExpansion(dataT3);
+%reliabilityExpansion(dataT3);  %Uncomment if you want to use
 
+
+%Plotting the effects of pestisides
 figure(1)
 plot(data(1,:),data(2,:),'color',[1, 0.5490, 0.5176]);
 hold on
 plot(reference(1,:),reference(2,:),'color',[0, 0.3373, 0.2471]);
 hold on
-
 figure(2)
 plot(data(1,:),data(3,:),'color',[1, 0.5490, 0.5176]);
 hold on
 plot(reference(1,:),reference(3,:),'color',[0, 0.3373, 0.2471]);
 hold on
-
 figure(3)
 plot(data(1,:),data(4,:),'color',[1, 0.5490, 0.5176]);
 hold on

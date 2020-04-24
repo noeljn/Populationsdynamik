@@ -67,15 +67,15 @@ for n = 1:3
         
         %Printing out the values every iteration and dividing the step size
         if n == 2
-            fprintf('Approximated values are: V=%f, S=%f\n',vvec(1,end),vvec(2,end));
+            fprintf('Approximated values are: V=%.15f, S=%.15f\n',vvec(1,end),vvec(2,end));
         elseif n == 3
-            fprintf('Approximated values are: V=%f, S=%f, R=%f\n',vvec(1,end),vvec(2,end),vvec(3,end));
+            fprintf('Approximated values are: V=%.15f, S=%.15f, R=%.15f\n',vvec(1,end),vvec(2,end),vvec(3,end));
         end
     end
     %Prints the error in time T1 between the first and last time found
     if n == 1
-        disp('The error in time is:')
-        disp(abs(time(end)-time(1)))
+        disp('All T1 for each step size')
+        disp(time)
     end
     
     %This prints out the order of accuracy that can be calculated
@@ -92,7 +92,7 @@ for n = 1:3
     %Plotting the error against step size and reference 
     %to see if RK has order of 4
     felv = abs(yvec(1:end-1)-yvec(2:end));
-    figure(10+n); %Starts from 10 to not overwrite other graphs
+    figure(11+n); %Starts from 10 to not overwrite other graphs
     loglog(hvec(1:end-1),felv,'b'); 
     hold on
     loglog(hvec,hvec.^4,'k')
@@ -118,10 +118,10 @@ for n = 1:3
     end
     
 end
-figure(11)
-title('Analysing Runge-Kutta 4 when finding T1')
 figure(12)
-title('Analysing Runge-Kutta 4 for V & S between T = T1 and 1.5')
+title('Analysing Runge-Kutta 4 when finding T1')
 figure(13)
+title('Analysing Runge-Kutta 4 for V & S between T = T1 and 1.5')
+figure(14)
 title('Analysing Runge-Kutta 4 for V, S & R between T = 1.5 and 3')
 
