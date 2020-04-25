@@ -152,8 +152,8 @@ function [data] = harvesting(dataT3,tau,pest)
                  -1.9.*u(2).^(1.4)+0.088.*u(1).^(0.6).*u(2).^(0.8)-1.4.*u(2).*u(3);
                  -1.8.*u(3) + 0.028.*u(2).*sqrt(u(3))];
 
-    %Collecting data between T3-T8 with Runge-Kutta 4 
-    t = 4;
+    %Collecting data between t = 3-8 with Runge-Kutta 4 
+    t = 3;
     if pest == 1
         start = [dataT3(1:2,end);dataT3(3,end)*0.3;dataT3(4,end)*0.8];
     else
@@ -168,12 +168,13 @@ function [data] = harvesting(dataT3,tau,pest)
         else
             year = start;   %Not calculating population if tau = 0
         end
-
-        %Harvesting at tau
-        year(2,end) = 100;
-        data = [data(:,1:end-1),year];
-        start = [data(1:2,end);data(3,end);data(4,end)];
-
+        
+        %Harvesting at tau and starts from t = 4
+        if t ~= 3
+            year(2,end) = 100;
+            data = [data(:,1:end-1),year];
+            start = [data(1:2,end);data(3,end);data(4,end)];
+        end
 
         %Pestisides added and calculates population after harvesting
         t = t + 1;
@@ -183,7 +184,6 @@ function [data] = harvesting(dataT3,tau,pest)
             start = [data(1:2,end);data(3,end)*0.3;data(4,end)*0.8];
 
         %Calculating the population when no pestisides are added 
-        %or also tau = 0
         elseif pest == 0    
             year = rk4(t,start(2:4,end),start(1,end),func2,2);
             data = [data(:,1:end-1),year];
