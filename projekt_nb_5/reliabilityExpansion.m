@@ -2,8 +2,53 @@ function  reliabilityExpansion(dataT3)
 yvec = [];
 for i = 0:4
     N = 1000 *2^i;
+    %By changing the tau and pest u can check how many decimals are correct
+    %for each tau.
     data = expansion(dataT3,0.5,1,N);
     yvec(end + 1) = data(2,end);
+    
+    %You can disp the amount to check how many decimals are wrong
+    %disp(data(2,end - 1));
+    %Used to check how many decimals are correct for tau
+    %{  
+    %Golden ratio
+    r = (sqrt(5)-1)/2;
+    q = 1 - r;
+    %We can see on the graph from the plot with earlier that maximum is between
+    %0 and 0.1
+    a = 0;
+    b = 0.1;
+    x1 = a + q*(b-a);
+    data = expansion(dataT3,x1,1,N);
+    index = find(data(1,:) == (7 + x1));
+    F1 = data(2,index - 1) - 100;
+    x2 = a + r*(b-a);
+    data = expansion(dataT3,x2,1,N);
+    index = find(data(1,:) == (7 + x2));
+    F2 = data(2,index - 1) - 100;
+    count = 0;
+    while count < 100
+        if F1 > F2
+            b = x2;
+            x2 = x1;
+            F2 = F1;
+            x1 = a + q*(b-a);
+            data = expansion(dataT3,x1,1,N);
+            index = find(data(1,:) == (7 + x1));
+            F1 = data(2,index - 1) - 100;
+        else
+            a = x1;
+            x1 = x2;
+            F1 = F2;
+            x2 = a + r*(b-a);
+            data = expansion(dataT3,x2,1,N);
+            index = find(data(1,:) == (7 + x2));
+            F2 = data(2,index - 1) - 100;
+        end
+        count = count + 1;
+    end
+    fprintf("Maximum harvest is made when tau is %f\n",a);
+    %}  
 end
 
     %This prints out the order of accuracy that can be calculated
