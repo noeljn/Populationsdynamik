@@ -2,8 +2,13 @@ function  reliabilityExpansion(dataT3)
 yvec = [];
 for i = 0:4
     N = 1000 *2^i;
+    %By changing the tau and pest u can check how many decimals are correct
+    %for each tau.
     data = expansion(dataT3,0.5,1,N);
     yvec(end + 1) = data(2,end);
+    
+    %You can disp the amount to check how many decimals are wrong
+    %disp(data(2,end - 1));
 end
 
     %This prints out the order of accuracy that can be calculated
